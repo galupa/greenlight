@@ -2,6 +2,7 @@ AllCops:
   Exclude:
   - 'db/schema.rb'
   - 'vendor/**/*'
+  - 'cache/**/*'
   DisabledByDefault: false
   TargetRubyVersion: 2.5
 

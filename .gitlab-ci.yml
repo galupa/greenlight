@@ -3,69 +3,44 @@ stages:
   - build
   - deploy
 
-cache:
-  paths:
-    - /cache
-
-before_script:
+variables:
+  CD_DOCKER_REPO: gitlab.catalyst.net.nz:4567/catalyst-bbb/docker-images/greenlight
 
 test:
   stage: test
   image: ruby:2.5
+  tags: [cat-prod-gitlabci4]
+  cache:
+    paths:
+      - cache/
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+    - bundle install --path cache
+    - bundle exec rake db:create RAILS_ENV=test
   script:
-  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
-  - bundle install --path /cache
-  - bundle exec rake db:create RAILS_ENV=test
-  - bundle exec rake test & bundle exec rspec & bundle exec rubocop
+    - bundle exec rake test
+    - bundle exec rspec
+    - bundle exec rubocop
   except:
     variables:
       - $CD_TEST_IGNORE
 
 build:
   stage: build
-  image: docker:stable
+  image: docker.catalyst.net.nz/catalyst/docker:latest
+  tags:
+    - docker-dind
   services:
-  - docker:dind
+    - docker:dind
+  before_script:
+    - docker login -u ${EXT_REGISTRY_USER} -p ${EXT_REGISTRY_TOKEN} gitlab.catalyst.net.nz:4567 
   script:
-  # Install bash, curl, git for deployment script
-  - apk update && apk add --no-cache bash curl git
-  # Install CA certs, openssl to https downloads, python for gcloud sdk
-  - apk add --update make ca-certificates openssl python
-  - update-ca-certificates
-  # Build.
-  - ./scripts/image_build.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA
+    - scripts/catalyst_image_build.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA
   only:
     refs:
-      - branches
+      - catalyst-v2
       - tags
-    variables:
-      - $CD_DOCKER_USERNAME
-      - $CD_DOCKER_PASSWORD
+      - web
   except:
     variables:
       - $CD_BUILD_IGNORE
-
-deploy:
-  stage: deploy
-  image: docker:stable
-  services:
-  - docker:dind
-  script:
-  # Install bash, curl, git for deployment script
-  - apk update && apk add --no-cache bash curl git
-  # Install CA certs, openssl to https downloads, python for gcloud sdk
-  - apk add --update make ca-certificates openssl python
-  - update-ca-certificates
-  # Deploy.
-  - ./scripts/image_deploy.sh $CI_PROJECT_PATH $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_COMMIT_BEFORE_SHA
-  only:
-    refs:
-      - branches
-      - tags
-    variables:
-      - $CD_DOCKER_USERNAME
-      - $CD_DOCKER_PASSWORD
-      - $CD_DEPLOY_SCRIPT
-  except:
-    variables:
-      - $CD_DEPLOY_IGNORE
