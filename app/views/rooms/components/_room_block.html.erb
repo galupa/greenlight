@@ -33,7 +33,7 @@
             <div style="display: none">
               <input class="form-control input-sm w-100 h-4 room-name-editable" value="<%= room.name %>">
             </div>
-            <div class="small text-muted">
+            <div class="small">
               <% if room.sessions > 0 %>
                 <i><%= t("room.last_session", session: recording_date(room.last_session)) %></i>
               <% else %>

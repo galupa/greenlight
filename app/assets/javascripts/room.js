@@ -308,6 +308,7 @@ function showCreateRoom(target) {
   $("#create-room-name").val("")
   $("#create-room-access-code").text(getLocalizedString("modal.create_room.access_code_placeholder"))
   $("#room_access_code").val(null)
+  $("#room_access_code").css("display", "none")
 
   $("#createRoomModal form").attr("action", $("body").data('relative-root'))
   $("#room_mute_on_join").prop("checked", $("#room_mute_on_join").data("default"))
@@ -356,11 +357,13 @@ function showUpdateRoom(target) {
   var accessCode = modal.closest(".room-block").data("room-access-code")
 
   if(accessCode){
-    $("#create-room-access-code").html(getLocalizedString("modal.create_room.access_code") + ": <label tabindex=0>" + accessCode + "</label>")
+    $("#create-room-access-code").html(getLocalizedString("modal.create_room.access_code") + ":")
     $("#room_access_code").val(accessCode)
+    $("#room_access_code").css("display", "block")
   } else {
     $("#create-room-access-code").text(getLocalizedString("modal.create_room.access_code_placeholder"))
     $("#room_access_code").val(null)
+    $("#room_access_code").css("display", "none")
   }
 }
 
@@ -398,8 +401,9 @@ function generateAccessCode(){
     accessCode += validCharacters.charAt(Math.floor(Math.random() * validCharacters.length));
   }
 
-  $("#create-room-access-code").html(getLocalizedString("modal.create_room.access_code") + ": <label tabindex=0>" + accessCode + "</label>")
+  $("#create-room-access-code").html(getLocalizedString("modal.create_room.access_code") + ":")
   $("#room_access_code").val(accessCode)
+  $("#room_access_code").css("display", "block")
 }
 
 function generateVoiceBridgePin() {
@@ -411,6 +415,7 @@ function generateVoiceBridgePin() {
 function ResetAccessCode(){
   $("#create-room-access-code").text(getLocalizedString("modal.create_room.access_code_placeholder"))
   $("#room_access_code").val(null)
+  $("#room_access_code").css("display", "none")
 }
 
 function resetVoiceBridgePin() {

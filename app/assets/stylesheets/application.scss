@@ -74,7 +74,9 @@ a {
 }
 
 .header {
-  height: $header-height;
+  /* fix zoom problem */
+  /* height: $header-height;*/
+  padding-bottom: unset !important;
 }
 
 .wrapper {
@@ -86,6 +88,7 @@ a {
 .footer {
   height: $footer-height;
   width: 100%;
+  color: inherit; /* check better styling */
 }
 
 .background {
@@ -98,6 +101,10 @@ a {
 
 .font-weight-400 {
   font-weight: 400;
+}
+
+.font-weight-600 {
+  font-weight: 600;
 }
 
 .subtitle {
@@ -154,16 +161,22 @@ input:focus {
 }
 
 .header .header-nav {
-  color: $text-muted !important;
+  /* fix zoom problem */
+  /* color: $text-muted !important; */
+  color: #495057 !important;
+  padding-bottom: 21px;
+  border-bottom: 1px solid transparent;
 
   &:hover {
-    padding-bottom: 21px;
+    /* fix zoom problem */
+    /* padding-bottom: 21px; */
     border-bottom: 1px solid $primary;
   }
 
   &.active {
     color: $primary !important;
-    padding-bottom: 21px;
+    /* fix zoom problem */
+    /* padding-bottom: 21px; */
     border-bottom: 1px solid $primary;
   }
 }
@@ -187,3 +200,40 @@ table {
 .btn i {
   transition: all .15s;
 }
+/* probably not needed because recordings will be removed */
+#recordings-table th,
+.shared-user {
+  color: #495057;
+}
+
+/* fix zoom problem */
+#create-room-access-code {
+  height: 100%;
+  padding-left: 0rem;
+}
+
+/* ui input */
+.custom-switch-description,
+.input-icon-addon,
+.avatar,
+.icon {
+  color: inherit !important;
+}
+
+#reset-access-code:focus,
+#generate-room-access-code:focus {
+  color:#495057;
+  background-color:#fff;
+  border-color:#1991eb;
+  outline:0;
+  box-shadow:0 0 0 2px rgba(70,127,207,0.25)
+ }
+
+#room_access_code {
+  position: absolute;
+  top: 18%;
+  bottom: 0;
+  left: 56%;
+  border: none;
+}
+

@@ -36,8 +36,8 @@
               <span id="generate-room-access-code" onclick="generateAccessCode()" class="input-icon-addon allow-icon-click cursor-pointer" tabindex="0" aria-label="Generate new access code">
                 <i class="fas fa-dice"></i>
               </span>
-              <%= f.label :access_code, t("modal.create_room.access_code_placeholder"), id: "create-room-access-code", class: "form-control", tabindex: "0", role: "log" %>
-              <%= f.hidden_field :access_code %>
+              <%= f.label :access_code, t("modal.create_room.access_code_placeholder"), id: "create-room-access-code", class: "form-control", tabindex: "0" %>
+              <div role="log"><%= f.text_field :access_code, size: 2, readonly: true %></div>
               <span onclick="ResetAccessCode()" id="reset-access-code" class="input-icon-addon allow-icon-click cursor-pointer" tabindex="0" aria-label="Reset Access Code">
                 <i class="far fa-trash-alt"></i>
               </span>
