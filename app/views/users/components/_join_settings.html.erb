@@ -17,34 +17,19 @@
   <%= hidden_field_tag :setting, "join_settings" %>
   <div class="form-group">
     <div class="row">
+      <%= f.fields_for :user_settings do |setting| %>
       <div class="col-8">
         <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description">Always join with microphone</span>
-            <%= f.check_box :autojoin_audio, checked: false, class: "custom-switch-input", disabled: false %>
+          <span class="ml-0 custom-switch-description"><%= t("settings.user_settings." + setting.object.name) %></span>
+          <% if setting.object.value == "true" %>
+            <%= setting.check_box :value, :checked => true, class: "custom-switch-input", disabled: false %>
+          <% else %>
+            <%= setting.check_box :value, class: "custom-switch-input", disabled: false %>
+          <% end %>
           <span class="custom-switch-indicator float-right"></span>
         </label>
       </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description">Skip echo test</span>
-          <%= f.check_box :skip_echo_test, checked: false, class: "custom-switch-input", disabled: false %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description">Share webcam automatically</span>
-          <%= f.check_box :share_webcam, checked: false, class: "custom-switch-input", disabled: false %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description">Skip webcam preview</span>
-          <%= f.check_box :share_webcam, checked: false, class: "custom-switch-input", disabled: false %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
+      <% end %>
     </div>
   </div>
   <div class="card-footer">

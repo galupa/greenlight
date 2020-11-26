@@ -60,6 +60,9 @@ module Joiner
       opts[:voice_bridge] = @room_settings["voiceBridgePin"]
 
       if current_user
+        current_user.user_settings.each do |v|
+          opts[v.name] =  v.value
+        end
         redirect_to join_path(@room, current_user.name, opts, current_user.uid)
       else
         join_name = params[:join_name] || params[@room.invite_path][:join_name]

@@ -35,6 +35,10 @@ class User < ApplicationRecord
 
   belongs_to :role, required: false
 
+  has_many :user_settings
+
+  accepts_nested_attributes_for :user_settings
+
   validates :name, length: { maximum: 256 }, presence: true,
                    format: { without: %r{https?://}i }
   validates :provider, presence: true
@@ -196,6 +200,33 @@ class User < ApplicationRecord
     update_attributes(main_room: room)
   end
 
+  def update_all_user_settings(settings = {})
+    settings.each do |k, v|
+      if v[:value] == "0"
+        update_setting(v[:id], "false")
+      else 
+        update_setting(v[:id], "true")
+      end
+    end
+  end
+
+  def update_setting(id, value)
+    # Dont update if it is not explicitly set to a value
+    return unless value.present?
+
+    setting = UserSetting.find_by(id: id)
+
+    setting.update_attributes(value: value)
+  end
+
+  def initialize_settings
+    #initialize default user settings
+    user_settings.create(name: "userdata-bbb_skip_check_audio", value: "false")
+    user_settings.create(name: "userdata-bbb_skip_video_preview", value: "false")
+    user_settings.create(name: "userdata-bbb_auto_share_webcam", value: "false")
+    user_settings.create(name: "userdata-bbb_listen_only_mode", value: "true")
+  end
+
   private
 
   # Destory a users rooms when they are removed.
@@ -213,6 +244,8 @@ class User < ApplicationRecord
     role_provider = Rails.configuration.loadbalanced_configuration ? provider : "greenlight"
 
     Role.create_default_roles(role_provider) if Role.where(provider: role_provider).count.zero?
+
+    initialize_settings
   end
 
   def check_if_email_can_be_blank

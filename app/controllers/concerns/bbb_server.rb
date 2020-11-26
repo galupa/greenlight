@@ -54,10 +54,9 @@ module BbbServer
     join_opts = {}
     join_opts[:userID] = uid if uid
     join_opts[:join_via_html5] = true
-    join_opts['userdata-bbb_auto_share_webcam'] = true
-    join_opts['userdata-bbb_skip_check_audio'] = true
-    join_opts['userdata-bbb_skip_video_preview'] = true
-    join_opts['userdata-bbb_listen_only_mode'] = false
+    options.select{|a,b|a.to_s.starts_with?("userdata-bbb")}.each do |k,v|
+      join_opts[k] = v
+    end
 
     bbb_server.join_meeting_url(room.bbb_id, name, password, join_opts)
   end
