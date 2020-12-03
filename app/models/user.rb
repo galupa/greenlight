@@ -212,9 +212,11 @@ class User < ApplicationRecord
 
   def update_setting(id, value)
     # Dont update if it is not explicitly set to a value
-    return unless value.present?
+    return unless value.present? && id.present?
 
     setting = UserSetting.find_by(id: id)
+
+    return if setting.nil?
 
     setting.update_attributes(value: value)
   end

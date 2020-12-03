@@ -432,6 +432,29 @@ describe UsersController, type: :controller do
       expect(user.user_settings[0][:value]).to eql("true")
       expect(flash[:success]).to be_present
     end
+    it "should not update unrecognize user settings" do
+      user = create(:user)
+      @request.session[:user_id] = user.id
+
+      settings_before = user.user_settings
+      opts = {}
+      opts[0] = {}
+      opts[0][:id] = "test"
+      opts[0][:value] = true
+      params = {
+        user: {
+          user_settings_attributes: opts,
+        }
+      }
+      post :update_settings, params: params.merge!(user_uid: user)
+      user.reload
+
+      expect(user.user_settings.length).to eql(settings_before.length)
+      expect(user.user_settings[0][:value]).to eql(settings_before[0][:value])
+      expect(user.user_settings[1][:value]).to eql(settings_before[1][:value])
+      expect(user.user_settings[2][:value]).to eql(settings_before[2][:value])
+      expect(user.user_settings[3][:value]).to eql(settings_before[3][:value])
+    end
   end
 
   describe "POST #update_password" do
