@@ -79,7 +79,7 @@ class UsersController < ApplicationController
 
   # GET /u/:user_uid/join_settings
   def join_settings
-    
+    redirect_to root_path unless current_user
   end
 
   # POST /u/:user_uid/join_settings
