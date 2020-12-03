@@ -416,7 +416,7 @@ describe UsersController, type: :controller do
       @request.session[:user_id] = user.id
 
       expect(user.user_settings[0][:value]).to eql("false")
-      
+
       opts = {}
       opts[0] = {}
       opts[0][:id] = user.user_settings[0][:id]

@@ -201,7 +201,7 @@ class User < ApplicationRecord
   end
 
   def update_all_user_settings(settings = {})
-    settings.each do | k, v |
+    settings.each do |_, v|
       if v[:value] == "0"
         update_setting(v[:id], "false")
       else
