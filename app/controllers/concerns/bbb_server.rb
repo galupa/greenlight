@@ -54,7 +54,7 @@ module BbbServer
     join_opts = {}
     join_opts[:userID] = uid if uid
     join_opts[:join_via_html5] = true
-    options.select{|a,b|a.to_s.starts_with?("userdata-bbb")}.each do |k,v|
+    options.select { |a, _| a.to_s.starts_with?("userdata-bbb") }.each do |k, v|
       join_opts[k] = v
     end
 

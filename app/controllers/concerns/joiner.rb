@@ -61,7 +61,7 @@ module Joiner
 
       if current_user
         current_user.user_settings.each do |v|
-          opts[v.name] =  v.value
+          opts[v.name] = v.value
         end
         redirect_to join_path(@room, current_user.name, opts, current_user.uid)
       else

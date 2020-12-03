@@ -201,10 +201,10 @@ class User < ApplicationRecord
   end
 
   def update_all_user_settings(settings = {})
-    settings.each do |k, v|
+    settings.each do | k, v |
       if v[:value] == "0"
         update_setting(v[:id], "false")
-      else 
+      else
         update_setting(v[:id], "true")
       end
     end
@@ -220,7 +220,7 @@ class User < ApplicationRecord
   end
 
   def initialize_settings
-    #initialize default user settings
+    # Initialize default user settings
     user_settings.create(name: "userdata-bbb_skip_check_audio", value: "false")
     user_settings.create(name: "userdata-bbb_skip_video_preview", value: "false")
     user_settings.create(name: "userdata-bbb_auto_share_webcam", value: "false")

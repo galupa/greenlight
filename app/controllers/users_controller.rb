@@ -84,12 +84,16 @@ class UsersController < ApplicationController
 
   # POST /u/:user_uid/join_settings
   def update_settings
-    settings_params = params.require(:user).permit(:user_settings_attributes => [:id, :value])
+    settings_params = params.require(:user).permit(user_settings_attributes: [:id, :value])
 
     @user.update_all_user_settings(settings_params[:user_settings_attributes])
 
-    @user.save!
-    return redirect_back fallback_location: root_path, flash: { success: I18n.t("info_update_success") }
+    # Notify the user that their account has been updated.
+    return redirect_back fallback_location: root_path, flash: { success: I18n.t("info_update_success") } if 
+      @user.save
+
+    # redirect_to change_password_path
+    render :join_settings
   end
 
   # GET /u/:user_uid/delete_account

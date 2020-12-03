@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserSettings < ActiveRecord::Migration[5.2]
   def change
     create_table :user_settings do |t|
@@ -8,7 +10,7 @@ class CreateUserSettings < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    User.all.each do |user|
+    User.all.each do (&:user)
       user.initialize_settings
     end
   end
