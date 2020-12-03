@@ -93,6 +93,25 @@ describe UsersController, type: :controller do
     end
   end
 
+  describe "GET #join_settings" do
+    it "renders the join settings template" do
+      user = create(:user)
+
+      @request.session[:user_id] = user.id
+
+      get :join_settings, params: { user_uid: user.uid }
+
+      expect(response).to render_template(:join_settings)
+    end
+
+    it "redirect to root if user isn't signed in" do
+      user = create(:user)
+
+      get :join_settings, params: { user_uid: user }
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
   describe "POST #create" do
     context "allow greenlight accounts" do
       before { allow(Rails.configuration).to receive(:allow_user_signup).and_return(true) }
@@ -135,6 +154,8 @@ describe UsersController, type: :controller do
 
         expect(u).to_not be_nil
         expect(u.name).to eql(params[:user][:name])
+
+        expect(u.user_settings.length).to eql(4)
 
         expect(flash[:success]).to be_present
         expect(response).to redirect_to(root_path)
@@ -386,6 +407,30 @@ describe UsersController, type: :controller do
         expect(user.main_room).not_to be_nil
         expect(response).to redirect_to(admins_path)
       end
+    end
+  end
+
+  describe "POST #update_settings" do
+    it "properly updates user settings" do
+      user = create(:user)
+      @request.session[:user_id] = user.id
+
+      expect(user.user_settings[0][:value]).to eql("false")
+      
+      opts = {}
+      opts[0] = {}
+      opts[0][:id] = user.user_settings[0][:id]
+      opts[0][:value] = true
+      params = {
+        user: {
+          user_settings_attributes: opts,
+        }
+      }
+      post :update_settings, params: params.merge!(user_uid: user)
+      user.reload
+
+      expect(user.user_settings[0][:value]).to eql("true")
+      expect(flash[:success]).to be_present
     end
   end
 
