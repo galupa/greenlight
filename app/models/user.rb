@@ -200,8 +200,8 @@ class User < ApplicationRecord
     update_attributes(main_room: room)
   end
 
-  def get_user_settings_as_hash
-    user_settings.map{ |x| [x[:name], x[:value]] }.to_h
+  def user_settings_as_hash
+    user_settings.map { |x| [x[:name], x[:value]] }.to_h
   end
 
   def update_all_user_settings(settings = {})
@@ -245,7 +245,6 @@ class User < ApplicationRecord
     role_provider = Rails.configuration.loadbalanced_configuration ? provider : "greenlight"
 
     Role.create_default_roles(role_provider) if Role.where(provider: role_provider).count.zero?
-
   end
 
   def check_if_email_can_be_blank
