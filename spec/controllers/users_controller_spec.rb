@@ -457,7 +457,6 @@ describe UsersController, type: :controller do
       user = create(:user)
       @request.session[:user_id] = user.id
 
-      settings_before = user.user_settings
       params = {
         user: {
           "userdata-bbb_listen_only_mode": 1,
