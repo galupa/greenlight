@@ -200,33 +200,32 @@ class User < ApplicationRecord
     update_attributes(main_room: room)
   end
 
+  def get_user_settings_as_hash
+    user_settings.map{ |x| [x[:name], x[:value]] }.to_h
+  end
+
   def update_all_user_settings(settings = {})
-    settings.each do |_, v|
-      if v[:value] == "0"
-        update_setting(v[:id], "false")
+    settings.each do |k, v|
+      if v == "0"
+        update_setting(k, "false")
       else
-        update_setting(v[:id], "true")
+        update_setting(k, "true")
       end
     end
   end
 
-  def update_setting(id, value)
+  def update_setting(name, value)
     # Dont update if it is not explicitly set to a value
-    return unless value.present? && id.present?
+    return unless name.present? && value.present?
 
-    setting = UserSetting.find_by(id: id)
-
-    return if setting.nil?
-
-    setting.update_attributes(value: value)
-  end
-
-  def initialize_settings
-    # Initialize default user settings
-    user_settings.create(name: "userdata-bbb_skip_check_audio", value: "false")
-    user_settings.create(name: "userdata-bbb_skip_video_preview", value: "false")
-    user_settings.create(name: "userdata-bbb_auto_share_webcam", value: "false")
-    user_settings.create(name: "userdata-bbb_listen_only_mode", value: "true")
+    setting = user_settings.find_by(name: name)
+    # Setting already exists
+    if setting.present?
+      # Updates settings
+      setting.update_attributes(value: value)
+    else
+      user_settings.create(name: name, value: value)
+    end
   end
 
   private
@@ -247,7 +246,6 @@ class User < ApplicationRecord
 
     Role.create_default_roles(role_provider) if Role.where(provider: role_provider).count.zero?
 
-    initialize_settings
   end
 
   def check_if_email_can_be_blank

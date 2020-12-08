@@ -9,7 +9,5 @@ class CreateUserSettings < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-
-    User.all.each(&:initialize_settings)
   end
 end

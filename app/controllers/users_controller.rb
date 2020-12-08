@@ -85,9 +85,10 @@ class UsersController < ApplicationController
 
   # POST /u/:user_uid/join_settings
   def update_settings
-    settings_params = params.require(:user).permit(user_settings_attributes: [:id, :value])
-
-    @user.update_all_user_settings(settings_params[:user_settings_attributes])
+    redirect_to root_path unless current_user
+    settings_params = params.require(:user)
+      .permit("userdata-bbb_skip_check_audio", "userdata-bbb_skip_video_preview", "userdata-bbb_auto_share_webcam", "userdata-bbb_listen_only_mode")
+    @user.update_all_user_settings(settings_params)
 
     # Notify the user that their account has been updated.
     return redirect_back fallback_location: root_path, flash: { success: I18n.t("info_update_success") } if
