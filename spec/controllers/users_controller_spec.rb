@@ -155,8 +155,6 @@ describe UsersController, type: :controller do
         expect(u).to_not be_nil
         expect(u.name).to eql(params[:user][:name])
 
-        expect(u.user_settings.length).to eql(4)
-
         expect(flash[:success]).to be_present
         expect(response).to redirect_to(root_path)
       end
