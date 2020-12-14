@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   before_action :ensure_unauthenticated_except_twitter, only: [:create]
   before_action :check_user_signup_allowed, only: [:create]
   before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
+  before_action :get_join_settings, only: [:edit, :join_settings, :update_settings]
 
   # POST /u
   def create
@@ -86,9 +87,7 @@ class UsersController < ApplicationController
   # POST /u/:user_uid/join_settings
   def update_settings
     return redirect_to root_path unless current_user
-    settings_params = params.require(:user).permit("userdata-bbb_skip_check_audio",
-      "userdata-bbb_skip_video_preview", "userdata-bbb_auto_share_webcam",
-      "userdata-bbb_listen_only_mode")
+    settings_params = params.require(:user).permit(@join_settings)
     @user.update_all_user_settings(settings_params)
 
     # Notify the user that their account has been updated.
@@ -97,6 +96,10 @@ class UsersController < ApplicationController
 
     # redirect_to change_password_path
     render :join_settings
+  end
+
+  def get_join_settings
+    @join_settings = Rails.configuration.join_settings_features.split(",")
   end
 
   # GET /u/:user_uid/delete_account

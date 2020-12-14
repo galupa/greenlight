@@ -17,50 +17,19 @@
   <%= hidden_field_tag :setting, "join_settings" %>
   <div class="form-group">
     <div class="row">
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description"><%= t("settings.user_settings.skip_check_audio") %></span>
-          <% if @user.user_settings_as_hash["userdata-bbb_skip_check_audio"] == "true" %>
-            <%= f.check_box "userdata-bbb_skip_check_audio", :checked => true, class: "custom-switch-input", disabled: false %>
-          <% else %>
-            <%= f.check_box "userdata-bbb_skip_check_audio", :checked => false, class: "custom-switch-input", disabled: false %>
-          <% end %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description"><%= t("settings.user_settings.skip_video_preview") %></span>
-          <% if @user.user_settings_as_hash["userdata-bbb_skip_video_preview"] == "true" %>
-            <%= f.check_box "userdata-bbb_skip_video_preview", :checked => true, class: "custom-switch-input", disabled: false %>
-          <% else %>
-            <%= f.check_box "userdata-bbb_skip_video_preview", :checked => false, class: "custom-switch-input", disabled: false %>
-          <% end %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description"><%= t("settings.user_settings.auto_share_webcam") %></span>
-          <% if @user.user_settings_as_hash["userdata-bbb_auto_share_webcam"] == "true" %>
-            <%= f.check_box "userdata-bbb_auto_share_webcam", :checked => true, class: "custom-switch-input", disabled: false %>
-          <% else %>
-            <%= f.check_box "userdata-bbb_auto_share_webcam", :checked => false, class: "custom-switch-input", disabled: false %>
-          <% end %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
-      <div class="col-8">
-        <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
-          <span class="ml-0 custom-switch-description"><%= t("settings.user_settings.listen_only_mode") %></span>
-          <% if @user.user_settings_as_hash["userdata-bbb_listen_only_mode"] == "false" %>
-            <%= f.check_box "userdata-bbb_listen_only_mode", :checked => false, class: "custom-switch-input", disabled: false %>
-          <% else %>
-            <%= f.check_box "userdata-bbb_listen_only_mode", :checked => true, class: "custom-switch-input", disabled: false %>
-          <% end %>
-          <span class="custom-switch-indicator float-right"></span>
-        </label>
-      </div>
+      <% @join_settings.each do |p| %>
+        <div class="col-8">
+          <label class="custom-switch pl-0 mt-3 mb-3 w-100 text-left d-inline-block">
+            <span class="ml-0 custom-switch-description"><%= t("settings.user_settings." + p ) %></span>
+            <% if @user.user_settings_as_hash[p] == "true" %>
+              <%= f.check_box p, :checked => true, class: "custom-switch-input", disabled: false %>
+            <% else %>
+              <%= f.check_box p, :checked => false, class: "custom-switch-input", disabled: false %>
+            <% end %>
+            <span class="custom-switch-indicator float-right"></span>
+          </label>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="card-footer">

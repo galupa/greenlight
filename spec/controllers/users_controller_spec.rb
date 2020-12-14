@@ -412,6 +412,7 @@ describe UsersController, type: :controller do
     it "properly updates user settings" do
       user = create(:user)
       @request.session[:user_id] = user.id
+      allow(Rails.configuration).to receive(:join_settings_features).and_return("userdata-bbb_listen_only_mode")
 
       expect(user.user_settings[0]).to eql(nil)
 
@@ -441,10 +442,12 @@ describe UsersController, type: :controller do
       user = create(:user)
       @request.session[:user_id] = user.id
 
+      allow(Rails.configuration).to receive(:join_settings_features).and_return("")
+
       settings_before = user.user_settings
       params = {
         user: {
-          "userdata-bbb_listen_only_mode_wrong": 1,
+          "userdata-bbb_listen_only_mode": 1,
         }
       }
       post :update_settings, params: params.merge!(user_uid: user)

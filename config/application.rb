@@ -101,6 +101,9 @@ module Greenlight
     # Configure which settings are available to user on room creation/edit after creation
     config.room_features = ENV['ROOM_FEATURES'] || ""
 
+    # Configure which settings are available to user on joining the room
+    config.join_settings_features = ENV['JOIN_SETTINGS_FEATURE'] || ""
+
     # The maximum number of rooms included in one bbbapi call
     config.pagination_number = ENV['PAGINATION_NUMBER'].to_i.zero? ? 25 : ENV['PAGINATION_NUMBER'].to_i
 
