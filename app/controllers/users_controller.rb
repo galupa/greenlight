@@ -29,7 +29,7 @@ class UsersController < ApplicationController
   before_action :ensure_unauthenticated_except_twitter, only: [:create]
   before_action :check_user_signup_allowed, only: [:create]
   before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
-  before_action :read_join_settings, only: [:edit, :join_settings, :update_settings]
+  before_action :read_join_settings, only: [:edit, :join_settings, :update_settings, :change_password, :delete_account]
 
   # POST /u
   def create
@@ -100,6 +100,7 @@ class UsersController < ApplicationController
 
   def read_join_settings
     @join_settings = Rails.configuration.join_settings_features.split(",")
+    @join_settings_defaults = Rails.configuration.join_settings_defaults.split(",")
   end
 
   # GET /u/:user_uid/delete_account

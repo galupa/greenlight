@@ -17,7 +17,7 @@
   <%= link_to edit_user_path, class: "list-group-item list-group-item-action dropdown-item #{"active" if active_page == "edit"}" do %>
     <span class="icon mr-3"><i class="fas fa-user"></i></span><%= t("settings.account.title") %>
   <% end %>
-  <% unless @join_settings.to_s.strip.empty? %>
+  <% unless @join_settings.length <= 0 %>
     <%= link_to join_settings_path, class: "list-group-item list-group-item-action dropdown-item #{"active" if active_page == "join_settings"}" do %>
     <span class="icon mr-3"><i class="fas fa-cog"></i></span><%= t("settings.account.join_settings") %>
     <% end %>
