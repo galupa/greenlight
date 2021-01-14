@@ -74,7 +74,7 @@ docker build --build-arg version_code="${CD_VERSION_CODE}" -t $CD_DOCKER_REPO:$C
 
 # Publish the image
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker push $CD_DOCKER_REPO || exit 1
+docker push $CD_DOCKER_REPO:$CD_REF_NAME || exit 1
 
 # Publish image as latest and v2 if it is a release (excluding alpha and beta)
 if [[ "$CD_REF_NAME" == *"release"* ]] && [[ "$CD_REF_NAME" != *"alpha"* ]] && [[ "$CD_REF_NAME" != *"beta"* ]]; then
