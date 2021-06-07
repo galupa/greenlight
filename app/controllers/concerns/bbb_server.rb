@@ -57,7 +57,7 @@ module BbbServer
     options.select { |a, _| a.to_s.starts_with?("userdata-bbb") }.each do |k, v|
       join_opts[k] = v
     end
-    join_opts[:createTime] = room.last_session.to_datetime.strftime("%Q")
+    join_opts[:createTime] = room.last_session.to_datetime.strftime("%Q") if room.last_session
 
     bbb_server.join_meeting_url(room.bbb_id, name, password, join_opts)
   end
@@ -109,6 +109,16 @@ module BbbServer
   def update_recording(record_id, meta)
     meta[:recordID] = record_id
     bbb_server.send_api_request("updateRecordings", meta)
+  end
+
+  # Update a recording from a room
+  def publish_recording(record_id)
+    bbb_server.publish_recordings(record_id, true)
+  end
+
+  # Update a recording from a room
+  def unpublish_recording(record_id)
+    bbb_server.publish_recordings(record_id, false)
   end
 
   # Deletes a recording from a room.
