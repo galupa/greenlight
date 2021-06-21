@@ -54,8 +54,8 @@ module BbbServer
     join_opts = {}
     join_opts[:userID] = uid if uid
     join_opts[:join_via_html5] = true
-    options.select { |a, _| a.to_s.starts_with?("userdata-bbb") }.each do |k, v|
-      join_opts[k] = v
+    options.filter { |option, _| option.to_s.starts_with?("userdata-bbb") }.each do |setting, value|
+      join_opts[setting] = value
     end
     join_opts[:createTime] = room.last_session.to_datetime.strftime("%Q")
 

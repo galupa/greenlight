@@ -622,7 +622,7 @@ en:
       userdata-bbb_skip_check_audio: Skip echo test
       userdata-bbb_skip_video_preview: Skip video preview
       userdata-bbb_auto_share_webcam: Auto share webcam
-      userdata-bbb_listen_only_mode: Enable listen only mode (disable this if you want to auto join microphone)
+      userdata-bbb_listen_only_mode: Enable listen only mode
     title: Profile
     search: Search
   signup:

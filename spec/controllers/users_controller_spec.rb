@@ -474,8 +474,8 @@ describe UsersController, type: :controller do
     end
   end
 
-  describe "POST #update_settings" do
-    it "properly updates user settings" do
+  describe "POST #update_join_settings" do
+    it "properly updates user join settings" do
       user = create(:user)
       @request.session[:user_id] = user.id
       allow(Rails.configuration).to receive(:join_settings_features).and_return("userdata-bbb_listen_only_mode")
@@ -487,7 +487,7 @@ describe UsersController, type: :controller do
           "userdata-bbb_listen_only_mode": 1,
         }
       }
-      post :update_settings, params: params.merge!(user_uid: user)
+      post :update_join_settings, params: params.merge!(user_uid: user)
       user.reload
 
       expect(user.user_settings[0][:value]).to eql("true")
@@ -498,7 +498,7 @@ describe UsersController, type: :controller do
           "userdata-bbb_listen_only_mode": 0,
         }
       }
-      post :update_settings, params: params.merge!(user_uid: user)
+      post :update_join_settings, params: params.merge!(user_uid: user)
       user.reload
 
       expect(user.user_settings[0][:value]).to eql("false")
@@ -516,7 +516,7 @@ describe UsersController, type: :controller do
           "userdata-bbb_listen_only_mode": 1,
         }
       }
-      post :update_settings, params: params.merge!(user_uid: user)
+      post :update_join_settings, params: params.merge!(user_uid: user)
       user.reload
 
       expect(user.user_settings.length).to eql(settings_before.length)
@@ -531,7 +531,7 @@ describe UsersController, type: :controller do
           "userdata-bbb_listen_only_mode": 1,
         }
       }
-      post :update_settings, params: params.merge!(user_uid: user)
+      post :update_join_settings, params: params.merge!(user_uid: user)
       expect(response).to redirect_to(root_path)
     end
   end

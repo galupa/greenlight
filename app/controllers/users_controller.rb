@@ -25,11 +25,11 @@ class UsersController < ApplicationController
   include Rolify
 
   before_action :find_user, only:
-    [:edit, :join_settings, :update_settings, :change_password, :delete_account, :update, :update_password]
+    [:edit, :join_settings, :update_join_settings, :change_password, :delete_account, :update, :update_password]
   before_action :ensure_unauthenticated_except_twitter, only: [:create]
   before_action :check_user_signup_allowed, only: [:create]
   before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
-  before_action :read_join_settings, only: [:edit, :join_settings, :update_settings, :change_password, :delete_account]
+  before_action :read_join_settings, only: [:edit, :join_settings, :update_join_settings, :change_password, :delete_account]
 
   # POST /u
   def create
@@ -85,7 +85,7 @@ class UsersController < ApplicationController
   end
 
   # POST /u/:user_uid/join_settings
-  def update_settings
+  def update_join_settings
     return redirect_to root_path unless current_user
     settings_params = params.require(:user).permit(@join_settings)
     @user.update_all_user_settings(settings_params)
@@ -94,7 +94,7 @@ class UsersController < ApplicationController
     return redirect_back fallback_location: root_path, flash: { success: I18n.t("info_update_success") } if
       @user.save
 
-    # redirect_to change_password_path
+    # redirect_to join_settings_path
     render :join_settings
   end
 
