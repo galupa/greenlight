@@ -104,7 +104,7 @@ describe UsersController, type: :controller do
       expect(response).to render_template(:join_settings)
     end
 
-    it "redirect to root if user isn't signed in" do
+    it "redirect to root if user try to go to join setting page and isn't signed in" do
       user = create(:user)
 
       get :join_settings, params: { user_uid: user }
